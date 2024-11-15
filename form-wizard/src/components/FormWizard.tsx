@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 
-import { ReviewSubmit } from './ReviewSubmit';
 import { useFormData } from '../hooks/useFormData';
 
-
 import '../styles/FormWizard.css';
-import { StepOne } from '../Steps/StepOne';
 import { StepTwo } from '../Steps/StepTwo';
+import StepOne from '../Steps/StepOne';
+import ReviewSubmit from './ReviewSubmit';
 
 
  export const FormWizard = () => {
@@ -34,6 +33,7 @@ import { StepTwo } from '../Steps/StepTwo';
     case 1:
       return (
         <StepOne
+          data-testid="step-one"
           nextStep={nextStep}
           updateFormData={updateFormData}
           defaultValues={formData}
@@ -42,6 +42,7 @@ import { StepTwo } from '../Steps/StepTwo';
     case 2:
       return (
         <StepTwo
+        data-testid="step-two"
           nextStep={nextStep}
           prevStep={prevStep}
           updateFormData={updateFormData}

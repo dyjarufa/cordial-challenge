@@ -27,7 +27,7 @@ export const StepTwo = ({ nextStep, prevStep, updateFormData, defaultValues }: S
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form  data-testid="step-two"onSubmit={handleSubmit(onSubmit)}>
       <h2>Delivery Preferences</h2>
       <Input
         label="Delivery Address"

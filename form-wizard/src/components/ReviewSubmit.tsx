@@ -1,16 +1,20 @@
 import React from 'react';
 import { useMutation } from '@tanstack/react-query';
-import { FormData } from '../../src/types/formTypes';
 import { submitFormData } from '../utils/api';
+import { AppFormData } from '../types/formTypes';
 import { Button } from '../UI/Button';
 
 interface ReviewSubmitProps {
   prevStep: () => void;
-  formData: FormData;
+  formData: AppFormData;
   resetForm: () => void;
 }
 
-export const ReviewSubmit =  ({ prevStep, formData, resetForm }: ReviewSubmitProps) => {
+const ReviewSubmit = ({
+  prevStep,
+  formData,
+  resetForm,
+}: ReviewSubmitProps) => {
   const mutation = useMutation({
     mutationFn: submitFormData,
     onSuccess: () => {
@@ -30,20 +34,47 @@ export const ReviewSubmit =  ({ prevStep, formData, resetForm }: ReviewSubmitPro
     <div>
       <h2>Review and Submit</h2>
       <ul>
-        <li><strong>First Name:</strong> {formData.firstName}</li>
-        <li><strong>Last Name:</strong> {formData.lastName}</li>
-        <li><strong>Email:</strong> {formData.email}</li>
-        <li><strong>Address:</strong> {formData.address}</li>
-        <li><strong>Preferred Time:</strong> {formData.preferredTime}</li>
-        <li><strong>Special Instructions:</strong> {formData.specialInstructions}</li>
+        <li>
+          <strong>First Name:</strong> {formData.firstName}
+        </li>
+        {formData.hasMiddleName && (
+          <li>
+            <strong>Middle Name:</strong> {formData.middleName}
+          </li>
+        )}
+        <li>
+          <strong>Last Name:</strong> {formData.lastName}
+        </li>
+        <li>
+          <strong>Email:</strong> {formData.email}
+        </li>
+        <li>
+          <strong>Address:</strong> {formData.address}
+        </li>
+        <li>
+          <strong>Preferred Time:</strong> {formData.preferredTime}
+        </li>
+        {formData.preferredTime === 'evening' && (
+          <li>
+            <strong>Available after 8 PM:</strong>{' '}
+            {formData.isAvailableAfter8PM ? 'Yes' : 'No'}
+          </li>
+        )}
+        <li>
+          <strong>Special Instructions:</strong> {formData.specialInstructions}
+        </li>
       </ul>
       <div>
         <Button onClick={prevStep}>Back</Button>
-        <Button onClick={handleSubmit} disabled={mutation.isPending}>
+        <Button data-testid='review-submit' onClick={handleSubmit} disabled={mutation.isPending}>
           {mutation.isPending ? 'Submitting...' : 'Submit'}
         </Button>
       </div>
-      {mutation.isError && <p className="error">Error submitting the form</p>}
+      {mutation.isError && (
+        <p className="error">Error submitting the form</p>
+      )}
     </div>
   );
 };
+
+export default ReviewSubmit;

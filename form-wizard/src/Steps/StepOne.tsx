@@ -2,7 +2,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { PersonalInfoFormData } from '../types/formTypes';
-import { personalInfoSchema } from '../../src/schemas/formSchemas';
+import { personalInfoSchema } from '../schemas/formSchemas';
 import { Input } from '../UI/Input';
 import { Button } from '../UI/Button';
 
@@ -13,7 +13,7 @@ interface StepOneProps {
   defaultValues: PersonalInfoFormData;
 }
 
-export const StepOne: React.FC<StepOneProps> = ({
+const StepOne: React.FC<StepOneProps> = ({
   nextStep,
   updateFormData,
   defaultValues,
@@ -21,6 +21,7 @@ export const StepOne: React.FC<StepOneProps> = ({
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<PersonalInfoFormData>({
     resolver: zodResolver(personalInfoSchema),
@@ -28,13 +29,15 @@ export const StepOne: React.FC<StepOneProps> = ({
     mode: 'onChange',
   });
 
+  const hasMiddleName = watch('hasMiddleName');
+
   const onSubmit = (data: PersonalInfoFormData) => {
     updateFormData(data);
     nextStep();
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form data-testid="step-one" onSubmit={handleSubmit(onSubmit)}>
       <h2>Personal Information</h2>
 
       <Input
@@ -42,6 +45,21 @@ export const StepOne: React.FC<StepOneProps> = ({
         {...register('firstName')}
         error={errors.firstName?.message}
       />
+
+      <div>
+        <label>
+          <input type="checkbox" {...register('hasMiddleName')} />
+          Do you have a middle name?
+        </label>
+      </div>
+
+      {hasMiddleName && (
+        <Input
+          label="Middle Name"
+          {...register('middleName')}
+          error={errors.middleName?.message}
+        />
+      )}
 
       <Input
         label="Last Name"
@@ -61,3 +79,4 @@ export const StepOne: React.FC<StepOneProps> = ({
   );
 };
 
+export default StepOne;

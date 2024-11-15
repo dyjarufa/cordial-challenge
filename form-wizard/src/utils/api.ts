@@ -1,6 +1,6 @@
-import { FormData } from '../types/formTypes';
+import { AppFormData } from '../types/formTypes';
 
-export const submitFormData = async (data: FormData): Promise<void> => {
+export const submitFormData = async (data: AppFormData): Promise<void> => {
   const response = await fetch('http://localhost:5000/submit', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },

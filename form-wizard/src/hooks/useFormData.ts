@@ -1,8 +1,9 @@
+import { AppFormData } from './../types/formTypes';
 import { useState, useEffect } from 'react';
-import { FormData } from '../types/formTypes';
+
 
 export const useFormData = () => {
-  const initialData: FormData = {
+  const initialData: AppFormData  = {
     firstName: '',
     lastName: '',
     email: '',
@@ -11,12 +12,12 @@ export const useFormData = () => {
     specialInstructions: '',
   };
 
-  const [formData, setFormData] = useState<FormData>(() => {
+  const [formData, setFormData] = useState<AppFormData>(() => {
     const savedData = localStorage.getItem('formData');
     return savedData ? JSON.parse(savedData) : initialData;
   });
 
-  const updateFormData = (data: Partial<FormData>) => {
+  const updateFormData = (data: Partial<AppFormData>) => {
     setFormData(prevData => ({ ...prevData, ...data }));
   };
 
